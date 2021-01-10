@@ -203,7 +203,7 @@ export class JsonPointer {
    * @returns {JsonPointer}
    */
   static compile(pointer: string, decodeOnly?: boolean): JsonPointer {
-    const segments = pointer.split('/').map((value) => this.isPrototypePolluted(value) ? '' : value )
+    const segments = pointer.split('/').map((value) => this.isPrototypePolluted(value) ? '' : value);
     const firstSegment = segments.shift();
     if (firstSegment === '') {
       return new JsonPointer(
