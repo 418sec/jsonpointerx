@@ -203,7 +203,7 @@ export class JsonPointer {
    * @returns {JsonPointer}
    */
   static compile(pointer: string, decodeOnly?: boolean): JsonPointer {
-    const segments = pointer.split('/');
+    const segments = pointer.split('/').map((value) => this.isPrototypePolluted(value) ? '' : value )
     const firstSegment = segments.shift();
     if (firstSegment === '') {
       return new JsonPointer(
@@ -279,5 +279,15 @@ export class JsonPointer {
     }
     /* istanbul ignore next */
     throw new Error('JsonPointer.unescapedReplacer: this should not happen');
+  }
+
+  /**
+   * Blacklist certain keys to prevent Prototype Pollution
+   * 
+   * @param key - The object key to check
+   * @returns boolean
+   */
+  private static isPrototypePolluted (key: any): boolean {
+    return ['__proto__', 'constructor', 'prototype'].includes(key);
   }
 }
